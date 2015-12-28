@@ -12,7 +12,8 @@ def main():
     This example simulates a topology where an encoder broadcasts packets to
     the decoder and a helper node. The helper node can support the encoder by
     sending additional packets to the decoder.  But in each step of the
-    simulation either only encoder or helper can generate a packet.
+    simulation either only encoder or helper can generate a packet.(compete for
+    the access to the wireless channel)
 
                                  +-----------+
                        __________|  helper   |__________
@@ -22,6 +23,7 @@ def main():
               |  encoder  |-------------------------|  decoder  |
               +-----------+           e_3           +-----------+
     """
+
     # Set the number of symbols (i.e. the generation size in RLNC
     # terminology) and the size of a symbol in bytes
     # TODO: parameterize symbols per generation
@@ -29,6 +31,7 @@ def main():
     symbol_size = 1400
 
     # TODO: parameterize error probabilities e_1, e_2, e_3
+    # suppose that e_1 = e_2
 
     # In the following we will make an encoder/decoder factory.
     # The factories are used to build actual encoders/decoders
