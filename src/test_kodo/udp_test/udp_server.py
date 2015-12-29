@@ -36,6 +36,8 @@ sock.bind((UDP_IP, UDP_PORT))
 # if the decoding is not finish
 while not decoder.is_complete():
     packet, addr = sock.recvfrom(1024)
+    r = decoder.rank()
+    print("the rank is %d" % r)
     decoder.read_payload(packet)
 
 # get the decoded data from decoder
