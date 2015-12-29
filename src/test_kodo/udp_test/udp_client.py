@@ -37,7 +37,7 @@ print "the length of message is %d" % messLen
 
 encoder.set_symbols(message)
 
-for i in range(len(message)):
+for i in range(22):
     packet = encoder.write_payload()
     sock.sendto(packet, (UDP_IP, UDP_PORT))
 
