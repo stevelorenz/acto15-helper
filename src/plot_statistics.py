@@ -3,7 +3,7 @@
 # #############################################################################
 # Author : Xiang,Zuo
 # E-Mail : xianglinks@gmail.com
-# Date   : 2015-12-29 11:14:35
+# Date   : 2016-01-03 18:12:02
 # About  : Plot the statistics of helper_test using matplotlib
 # #############################################################################
 
@@ -11,24 +11,25 @@ import numpy as np
 import matplotlib
 from matplotlib import pyplot as plt
 
-# get data from statics.dat
 
-file = open("statistics.dat")
+#  get data from statics.dat
 
-file.close()
+#  file = open("statistics.dat")
 
-# the link loss of e3
-e_3 = np.arange(0, 0.9, 0.1)
+#  file.close()
 
-y = e_3
+#  the link loss of e3
+#  e_3 = np.arange(0, 0.9, 0.1)
 
-
-plt.title("The total packets")
-plt.xlabel("The link loss between sender and reciever(e_3)")
-plt.ylabel("Number of packets")
+#  y = e_3
 
 
-plt.errorbar(e_3, y, yerr=0.04)
+#  plt.title("The total packets")
+#  plt.xlabel("The link loss between sender and reciever(e_3)")
+#  plt.ylabel("Number of packets")
 
-# save the figure
-plt.savefig('statistics.svg', format='svg', dpi=1200)
+
+#  plt.errorbar(e_3, y, yerr=0.04)
+
+#  save the figure
+#  plt.savefig('statistics.svg', format='svg', dpi=1200)
