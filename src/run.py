@@ -29,6 +29,7 @@ it just stealing the sending time of original encoder
           +-----------+           e_3           +-----------+
 """
 
+
 def main():
     # init the the generation size in RLNC and the size of a symbol in bytes
     symbols = 100  # the generation size
@@ -60,12 +61,13 @@ def main():
     num_sim = 1  # the number of simulation
 
     # 1.simulation without the helper
-    simulate((symbols, symbol_size), (e_1, e_2, e_3), symbols + 1, data_in, num_sim)
+    print("the result without helper:")
+    simulate(symbols, symbol_size, e_1, e_2, e_3, symbols * 100, data_in, num_sim)
+    print("the result with helper using PlayNCool:")
+    # 2.simulation with helper using PlayNCool policy(in region2)
+    simulate(symbols, symbol_size, e_1, e_2, e_3, tr, data_in, num_sim)
 
-    # 2.simulation with helper using PlayNCool policy
-    # simulate((symbols, symbol_size), (e_1, e_2, e_3), tr, data_in, num_sim)
-
-    # Data Process --------------------------------------------------------------------
+    # TODO: Data Process --------------------------------------------------------------------
 
 if __name__ == "__main__":
     main()
