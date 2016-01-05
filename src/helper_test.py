@@ -56,7 +56,12 @@ def simulate(symbols, symbol_size, e_1, e_2, e_3, tr, data_in, num_sim):
         max_symbol_size=symbol_size)
 
     # simulate for num_sim times --------------------------------------------------------
+    # init lists for statistical results
+    encoder_sent_list = []
+    recoder_sent_list = []
+
     for i in range(num_sim):
+    # start test loop -------------------------------------------------------------------
         print("round number is %d" %i)
 
         # creat coder at each node
@@ -73,6 +78,7 @@ def simulate(symbols, symbol_size, e_1, e_2, e_3, tr, data_in, num_sim):
         ct_recoder_sent = 0  # packets sent from recoder
         ct_recoder_recv = 0  # packets recieved by recoder
         ct_decoder_recv = 0  # packets recieved by decoder
+        ct_dependent_encoder = 0  # linear dependent packets by packet source
 
         # flag for alternatively sending by encoder and recoder
         flag = 0  # start from recoder
@@ -80,6 +86,7 @@ def simulate(symbols, symbol_size, e_1, e_2, e_3, tr, data_in, num_sim):
         # main loop: until the decoder has decoded all the orginal packets
         # systematic coding should be firstly tested
         while not decoder.is_complete():
+        # start recieve loop ------------------------------------------------------------
             # select either encoder or recoder as packet source
             # determined by the number of packets recieved by recoder
 
@@ -98,8 +105,11 @@ def simulate(symbols, symbol_size, e_1, e_2, e_3, tr, data_in, num_sim):
 
                 if np.random.uniform(0, 1) > e_3:
                     # the decoder get the packet
+                    r = decoder.rank()  # the number of already decoded packets
                     decoder.read_payload(packet)
                     ct_decoder_recv += 1
+                    if r == decoder.rank():
+                        ct_dependent_encoder += 1
 
             # the helper start to send packets(if ct_recoder_recv >= threshold_recoder)
             # test-scenario1: the encoder and recoder send packets alternatively(TDMA)
@@ -131,12 +141,15 @@ def simulate(symbols, symbol_size, e_1, e_2, e_3, tr, data_in, num_sim):
 
                     if np.random.uniform(0, 1) > e_3:
                         # the decoder get the packet
+                        r = decoder.rank()  # the number of already decoded packets
                         decoder.read_payload(packet)
                         ct_decoder_recv += 1
+                        if r == decoder.rank():
+                            ct_dependent_encoder += 1
+                            ct_decoder_recv += 1
 
                     flag = not flag  # change flag for next round
-
-        #  TODO: count linear dependent packets by packet source
+        # end recieve loop --------------------------------------------------------------
         total_packets_sent = ct_encoder_sent + ct_recoder_sent
 
         # copy the symbols from the decoders
@@ -149,10 +162,32 @@ def simulate(symbols, symbol_size, e_1, e_2, e_3, tr, data_in, num_sim):
             print("packets recieved by recoder is %d" % ct_recoder_recv)
             print("packets sent from recoder is %d" % ct_recoder_sent)
             print("packets recieved by decoder is %d" % ct_decoder_recv)
+            print("number of linear dependent packets by encoder is %d" % ct_dependent_encoder)
             print("total number packets sent is %d" % total_packets_sent)
 
-            # TODO return the result in a appropriate format
+            # put the results in lists
+            encoder_sent_list.append(ct_encoder_sent)
+            recoder_sent_list.append(ct_recoder_sent)
 
         else:
             print("unexpected failure to decode please file a bug report :)")
             sys.exit(1)
+    # end test loop ---------------------------------------------------------------------
+    # caculate statistical results
+
+    # for encoder
+    avg_encoder_sent = np.average(encoder_sent_list)
+    std_encoder_sent = np.std(encoder_sent_list)
+    emp_std_encoder_sent = np.sqrt(float(num_sim) / (num_sim - 1)) * std_encoder_sent  # get empirical std
+
+    # for recoder
+    avg_recoder_sent = np.average(recoder_sent_list)
+    std_recoder_sent = np.std(recoder_sent_list)
+    emp_std_recoder_sent = np.sqrt(float(num_sim) / (num_sim - 1)) * std_recoder_sent  # get empirical std
+
+    # save the results in a CVS file
+    data_file = open('./results.dat', 'a')
+    data_str = str(avg_encoder_sent) + ',' + str(emp_std_encoder_sent) + ' '
+    data_str += str(avg_recoder_sent) + ',' + str(emp_std_recoder_sent) + '\n'
+    data_file.write(data_str)
+    data_file.close()

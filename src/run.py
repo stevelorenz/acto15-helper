@@ -10,6 +10,7 @@
 # #####################################
 
 import os
+import numpy as np
 from helper_test import simulate
 
 """
@@ -38,34 +39,38 @@ def main():
     # init error probabilities e_1, e_2, e_3
     # suppose that e_1 = e_2 (symmetrical)
     e_1 = e_2 = 0.3
-    e_3 = 0.8
 
-    """
-     threshold_recoder(tr): number of transmission from the sender before the helper starts transmitting
-     according to the PlayNCool policy :
-     tr = -g * C(e) / D(e) - (1 - e_3 ) * C(e)
-     with C(e) = (-1 + e_2 + e_3 - e_1 * e_3)
-          D(e) = (2 - e_3 - e_2) * (e_3 - e_1 * e_3)
-    """
-    C = (-1 + e_2 + e_3 - e_1 * e_3)
-    D = (2 - e_3 - e_2) * (e_3 - e_1 * e_3)
-    tr = (-1 * symbols * C) / (D - (1 - e_3) * C)
-    tr = int(tr)
-    print("the threshold of recoder is %d" %tr)
+    open('./results.dat', 'w').close()  # empty the data in file
 
-    # init data to be transmitted
-    # fill the input data with random data using /dev/urandom
-    data_in = os.urandom(symbols * symbol_size)
+    # loop for different e_3
+    for e_3 in np.arange(0.1, 1, 0.1):
 
-    # Simulation ----------------------------------------------------------------------
-    num_sim = 1  # the number of simulation
+        """
+         threshold_recoder(tr): number of transmission from the sender before the helper starts transmitting
+         according to the PlayNCool policy :
+         tr = -g * C(e) / D(e) - (1 - e_3 ) * C(e)
+         with C(e) = (-1 + e_2 + e_3 - e_1 * e_3)
+              D(e) = (2 - e_3 - e_2) * (e_3 - e_1 * e_3)
+        """
+        C = (-1 + e_2 + e_3 - e_1 * e_3)
+        D = (2 - e_3 - e_2) * (e_3 - e_1 * e_3)
+        tr = (-1 * symbols * C) / (D - (1 - e_3) * C)
+        tr = int(tr)
+        print("the threshold of recoder is %d" %tr)
 
-    # 1.simulation without the helper
-    print("the result without helper:")
-    simulate(symbols, symbol_size, e_1, e_2, e_3, symbols * 100, data_in, num_sim)
-    print("the result with helper using PlayNCool:")
-    # 2.simulation with helper using PlayNCool policy(in region2)
-    simulate(symbols, symbol_size, e_1, e_2, e_3, tr, data_in, num_sim)
+        # init data to be transmitted
+        # fill the input data with random data using /dev/urandom
+        data_in = os.urandom(symbols * symbol_size)
+
+        # Simulation ----------------------------------------------------------------------
+        num_sim = 2  # the number of simulation
+
+        # 1.simulation without the helper
+        print("the result without helper:")
+        simulate(symbols, symbol_size, e_1, e_2, e_3, symbols * 100, data_in, num_sim)
+        print("the result with helper using PlayNCool:")
+        # 2.simulation with helper using PlayNCool policy(in region2)
+        simulate(symbols, symbol_size, e_1, e_2, e_3, tr, data_in, num_sim)
 
     # TODO: Data Process --------------------------------------------------------------------
 
