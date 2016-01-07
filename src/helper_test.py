@@ -74,7 +74,7 @@ def simulate(symbols, symbol_size, e_1, e_2, e_3, tr, data_in, num_sim):
         decoder = decoder_factory.build()
 
         # put the data buffer to the encoder so that we may start to produce encoded symbols from it
-        encoder.set_symbols(data_in)
+        encoder.set_const_symbols(data_in)
 
         # init counters for each node
         ct_encoder_sent = 0  # packets sent from encoder
