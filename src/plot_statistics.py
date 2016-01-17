@@ -11,10 +11,6 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 
-def plotErrorBar(x, y, x_error, y_error):
-    pass
-
-
 def main():
     # init list for plot  ---------------------------------------------------------------
     total_no_helper_avg = []
@@ -66,8 +62,8 @@ def main():
     recoder_hwci = map(float, recoder_hwci)
 
     # calc the half width of confidence interval(using student-distribution)
-    num_sim = 20
-    t_factor = 2.845
+    num_sim = 50
+    t_factor = 2.678  # 99% for two sided
 
     def calc_hwci(num):
         return (t_factor * float(num)) / np.sqrt(num_sim)
@@ -78,20 +74,21 @@ def main():
 
     # plot the result  ------------------------------------------------------------------
     e_3 = np.arange(0, 100, 5)
-    plt.errorbar(e_3, total_no_helper_avg, yerr=total_helper_hwci, color='red', label='without helper', lw=1.5, marker='.')
-    plt.errorbar(e_3, total_helper_avg, yerr=total_helper_hwci, color='black', label='total packets sent with helper', lw=1.5, marker='.')
-    plt.errorbar(e_3, recoder_avg, yerr=recoder_hwci, color='blue', label='packets sent from helper', lw=1.5, marker='.')
+    plt.errorbar(e_3, total_no_helper_avg, yerr=total_helper_hwci, color='red', label='ohne Helfer', lw=1.5, marker='.')
+    plt.errorbar(e_3, total_helper_avg, yerr=total_helper_hwci, color='black', label='gesamte Pakete mit Helfer', lw=1.5, marker='.')
+    plt.errorbar(e_3, recoder_avg, yerr=recoder_hwci, color='blue', label='Pakete vom Helfer', lw=1.5, marker='.')
 
     # settings for the figure
-    plt.title("Test for Helper Node")
-    plt.xlabel("loss e_3 (%)")
-    plt.ylabel("number of packets")
-    plt.ylim(0, 1100)
-    plt.xlim(0, 90)
+    #  plt.title("")
+    plt.xlabel("Paketverlustrate e_3 (%)")
+    plt.ylabel("Anzahl der Pakten")
+    # set extrem value on x and y axis
+    plt.ylim(0, 500)
+    plt.xlim(30, 70)
     plt.legend(loc='upper left', prop={'size': 12})
     plt.grid()
 
-    plt.savefig('e_2(0.4)_local2.png', dpi=1080)
+    plt.savefig('fig5(60)_local1.png', dpi=500)
 
 
 if __name__ == "__main__":

@@ -42,7 +42,7 @@ def main():
 
     # init error probabilities e_1, e_2, e_3
     # suppose that e_1 = e_2 (symmetrical)
-    e_1 = e_2 = 0.4
+    e_1 = e_2 = 0.6
 
     open('./results.dat', 'w').close()  # empty the data in file
 
@@ -67,7 +67,7 @@ def main():
         data_in = os.urandom(symbols * symbol_size)
 
         # Simulation ----------------------------------------------------------------------
-        num_sim = 20  # the number of simulation
+        num_sim = 50  # number of simulations each round
 
         # 1.simulation without the helper
         #  print("the result without helper:")
