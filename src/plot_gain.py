@@ -4,7 +4,7 @@
 # Author : Xiang,Zuo
 # E-Mail : xianglinks@gmail.com
 # Date   : 2016-01-03 18:12:02
-# About  : Plot statistical results of helper_test using matplotlib
+# About  : Plot the gain of using the helper node
 # #############################################################################
 
 import numpy as np
