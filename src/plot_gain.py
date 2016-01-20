@@ -72,23 +72,27 @@ def main():
     total_helper_hwci = map(calc_hwci, total_helper_hwci)
     recoder_hwci = map(calc_hwci, recoder_hwci)
 
+    # calculate the gain with helper node
+    gain = []
+    for i in range(len(total_helper_avg)):
+        gain.append(total_no_helper_avg[i] / total_helper_avg[i])
+
     # plot the result  ------------------------------------------------------------------
     e_3 = np.arange(0, 100, 5)
-    plt.errorbar(e_3, total_no_helper_avg, yerr=total_helper_hwci, color='red', label='ohne Helfer', lw=1.5, marker='.')
-    plt.errorbar(e_3, total_helper_avg, yerr=total_helper_hwci, color='black', label='gesamte Pakete mit Helfer', lw=1.5, marker='.')
-    plt.errorbar(e_3, recoder_avg, yerr=recoder_hwci, color='blue', label='Pakete vom Helfer', lw=1.5, marker='.')
+
+    plt.plot(e_3, gain, color='black', lw=1, ls='-', label='Gewinn durch Helfer', marker='o', markerfacecolor='None', markeredgewidth=1, markeredgecolor='black')
 
     # settings for the figure
     #  plt.title("")
     plt.xlabel("Paketverlustrate e_3 (%)")
-    plt.ylabel("Anzahl der Pakten")
+    plt.ylabel("Gewinn")
     # set extrem value on x and y axis
-    plt.ylim(0, 500)
-    plt.xlim(30, 70)
+    #  plt.ylim(0, 500)
+    #  plt.xlim(30, 70)
     plt.legend(loc='upper left', prop={'size': 12})
     plt.grid()
 
-    plt.savefig('fig5(60)_local1.png', dpi=500)
+    plt.savefig('./fig1(30)_gain.png', dpi=500)
 
 
 if __name__ == "__main__":
