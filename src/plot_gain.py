@@ -87,12 +87,12 @@ def main():
     plt.xlabel("Paketverlustrate e_3 (%)")
     plt.ylabel("Gewinn")
     # set extrem value on x and y axis
-    #  plt.ylim(0, 500)
+    plt.ylim(0, 7)
     #  plt.xlim(30, 70)
     plt.legend(loc='upper left', prop={'size': 12})
     plt.grid()
 
-    plt.savefig('./fig1(30)_gain.png', dpi=500)
+    plt.savefig('./fig6(90)_gain.png', dpi=500)
 
 
 if __name__ == "__main__":

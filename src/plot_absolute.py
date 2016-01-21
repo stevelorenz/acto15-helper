@@ -22,7 +22,7 @@ def main():
     recoder_hwci = []
 
     # read data from file ---------------------------------------------------------------
-    data_file = open('./results.dat', 'r')
+    data_file = open('./results_30.dat', 'r')
     data = data_file.read()
     data_file.close()
 
@@ -87,7 +87,7 @@ def main():
     plt.xlabel("Paketverlustrate e_3 (%)")
     plt.ylabel("Anzahl der Pakten")
     # set extrem value on x and y axis
-    #  plt.ylim(0, 500)
+    plt.ylim(0, 2200)
     #  plt.xlim(30, 70)
     plt.legend(loc='upper left', prop={'size': 12})
     plt.grid()
