@@ -42,7 +42,7 @@ def main():
 
     # init error probabilities e_1, e_2, e_3
     # suppose that e_1 = e_2 (symmetrical)
-    e_1 = e_2 = 0.3
+    e_1 = e_2 = 0.9
 
     open('./results.dat', 'w').close()  # empty the data in file
 

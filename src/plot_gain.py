@@ -22,7 +22,7 @@ def main():
     recoder_hwci = []
 
     # read data from file ---------------------------------------------------------------
-    data_file = open('./results.dat', 'r')
+    data_file = open('./results_30.dat', 'r')
     data = data_file.read()
     data_file.close()
 
@@ -76,6 +76,8 @@ def main():
     gain = []
     for i in range(len(total_helper_avg)):
         gain.append(total_no_helper_avg[i] / total_helper_avg[i])
+        gain[i] = gain[i] - 1
+        gain[i] = gain[i] * 100
 
     # plot the result  ------------------------------------------------------------------
     e_3 = np.arange(0, 100, 5)
@@ -85,14 +87,14 @@ def main():
     # settings for the figure
     #  plt.title("")
     plt.xlabel("Paketverlustrate e_3 (%)")
-    plt.ylabel("Gewinn")
+    plt.ylabel("Gewinn (%)")
     # set extrem value on x and y axis
-    #  plt.ylim(0, 500)
+    plt.ylim(-100, 700)
     #  plt.xlim(30, 70)
     plt.legend(loc='upper left', prop={'size': 12})
     plt.grid()
 
-    plt.savefig('./fig1(30)_gain.png', dpi=500)
+    plt.savefig('./fig2(30)_gain.png', dpi=500)
 
 
 if __name__ == "__main__":

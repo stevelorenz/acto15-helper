@@ -11,7 +11,7 @@ import numpy as np
 
 
 def main():
-    # init list for plot  ---------------------------------------------------------------
+    # init list for plot
     total_no_helper_avg = []
     total_no_helper_std = []
 
@@ -20,12 +20,12 @@ def main():
     recoder_avg = []
     recoder_std = []
 
-    # read data from file ---------------------------------------------------------------
+    # read data from file
     data_file = open('./results_30.dat', 'r')
     data = data_file.read()
     data_file.close()
 
-    # data processing -------------------------------------------------------------------
+    # data processing
     data = data.split('\n')
     data.pop()
 
@@ -64,6 +64,8 @@ def main():
     gain = []
     for i in range(len(total_helper_avg)):
         gain.append(total_no_helper_avg[i] / total_helper_avg[i])
+        gain[i] = gain[i] - 1
+        gain[i] = gain[i] * 100
 
     # limit to 2 decimals
     def use2decimal(num):
@@ -98,7 +100,7 @@ def main():
     gain_tex_file = open('./gain.tex', 'w+')
 
     line1 = 'e_3(%)'
-    line2 = 'Gewinn'
+    line2 = 'Gewinn(%)'
 
     for i in range(len(gain)):
         line1 = line1 + ' & ' + str(loss[i])
