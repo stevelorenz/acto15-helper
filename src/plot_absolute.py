@@ -22,7 +22,7 @@ def main():
     recoder_hwci = []
 
     # read data from file ---------------------------------------------------------------
-    data_file = open('./results_30.dat', 'r')
+    data_file = open('./results_90.dat', 'r')
     data = data_file.read()
     data_file.close()
 
@@ -78,8 +78,9 @@ def main():
     #  plt.errorbar(e_3, total_helper_avg, yerr=total_helper_hwci, color='black', label='gesamte Pakete mit Helfer', lw=1.5, marker='^')
     #  plt.errorbar(e_3, recoder_avg, yerr=recoder_hwci, color='blue', label='Pakete vom Helfer', lw=1.5, marker='o')
 
-    plt.plot(e_3, total_no_helper_avg, color='blue', label='ohne Helfer', lw=1, ls='--', marker='o', markerfacecolor='None', markeredgewidth=1, markeredgecolor='blue')
-    plt.plot(e_3, total_helper_avg, color='green', label='gesamte Pakete mit Helfer', lw=1, ls='-', marker='^', markerfacecolor='None', markeredgewidth=1, markeredgecolor='green')
+    plt.errorbar(e_3, total_no_helper_avg, yerr=total_no_helper_hwci, color='blue', label='ohne Helfer', lw=1, ls='--', marker='o', markerfacecolor='None', markeredgewidth=1, markeredgecolor='blue')
+    #  plt.plot(e_3, total_helper_avg, color='green', label='gesamte Pakete mit Helfer', lw=1, ls='-', marker='^', markerfacecolor='None', markeredgewidth=1, markeredgecolor='green')
+    plt.errorbar(e_3, total_helper_avg, yerr=total_helper_hwci, color='green', label='gesamte Pakete mit Helfer', lw=1, ls='-', marker='^', markerfacecolor='None', markeredgewidth=1, markeredgecolor='green')
     plt.plot(e_3, recoder_avg, color='black', label='Pakete vom Helfer', lw=1, ls='-', marker='s', markerfacecolor='None', markeredgewidth=1, markeredgecolor='black')
 
     # settings for the figure
@@ -92,7 +93,7 @@ def main():
     plt.legend(loc='upper left', prop={'size': 12})
     plt.grid()
 
-    plt.savefig('./fig1(30).png', dpi=500)
+    plt.savefig('./fig5(90).png', dpi=500)
 
 
 if __name__ == "__main__":

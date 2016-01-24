@@ -22,7 +22,7 @@ def main():
     recoder_hwci = []
 
     # read data from file ---------------------------------------------------------------
-    data_file = open('./results_30.dat', 'r')
+    data_file = open('./results_90.dat', 'r')
     data = data_file.read()
     data_file.close()
 
@@ -94,7 +94,7 @@ def main():
     plt.legend(loc='upper left', prop={'size': 12})
     plt.grid()
 
-    plt.savefig('./fig2(30)_gain.png', dpi=500)
+    plt.savefig('./fig6(90)_gain.png', dpi=500)
 
 
 if __name__ == "__main__":
