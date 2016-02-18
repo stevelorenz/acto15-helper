@@ -22,7 +22,7 @@ def main():
     recoder_hwci = []
 
     # read data from file ---------------------------------------------------------------
-    data_file = open('./results_90.dat', 'r')
+    data_file = open('../test-results/results-0.3.dat', 'r')
     data = data_file.read()
     data_file.close()
 

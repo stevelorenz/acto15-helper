@@ -10,6 +10,7 @@
 # #####################################
 
 import os
+import time
 
 import numpy as np
 
@@ -35,16 +36,30 @@ it just stealing the sending time of original encoder
 
 
 def main():
-    print("Simulation started...")
     # init the the generation size in RLNC and the size of a symbol in bytes
     symbols = 100  # the generation size
     symbol_size = 1500  # usually the MTU of the network 1400 - 1600 bytes
 
     # init error probabilities e_1, e_2, e_3
     # suppose that e_1 = e_2 (symmetrical)
-    e_1 = e_2 = 0.9
+    e_2 = 0.3
+    e_1 = e_2
 
-    open('./results.dat', 'w').close()  # empty the data in file
+    # check if the test-results dir exits
+    results_dir = "../test-results/"
+    file_name = "results-" + str(e_2) + ".dat"
+
+    if os.path.exists(results_dir) == 0:
+        os.mkdir(results_dir)
+        print("create dir %s" % results_dir)
+
+    results_file = os.path.join(results_dir, file_name)
+
+    open(results_file, 'w').close()  # empty the data in results file
+
+    print("simulation start with e_2 = %.2f" % e_2)
+
+    start_time = time.time()
 
     # loop for different e_3
     for e_3 in np.arange(0, 1, 0.05):
@@ -60,7 +75,6 @@ def main():
         D = (2 - e_3 - e_2) * (e_3 - e_1 * e_3)
         tr = (-1 * symbols * C) / (D - (1 - e_3) * C)
         tr = int(tr)
-        #  print("the threshold of recoder is %d" %tr)
 
         # init data to be transmitted
         # fill the input data with random data using /dev/urandom
@@ -71,12 +85,15 @@ def main():
 
         # 1.simulation without the helper
         #  print("the result without helper:")
-        simulate(symbols, symbol_size, e_1, e_2, e_3, symbols * 100, data_in, num_sim)
-        #  print("the result with helper using PlayNCool:")
+        simulate(symbols, symbol_size, e_1, e_2, e_3, symbols * 100, data_in, num_sim, results_file)
         # 2.simulation with helper using PlayNCool policy(in region2)
-        simulate(symbols, symbol_size, e_1, e_2, e_3, tr, data_in, num_sim)
+        simulate(symbols, symbol_size, e_1, e_2, e_3, tr, data_in, num_sim, results_file)
 
-    print("Simulation finished. results in ./results.dat")
+    end_time = time.time()
+
+    run_time = end_time - start_time
+    print("simulation finished with run_time %.2f seconds" % run_time)
+    print("test results as %s saved in %s" %(file_name, results_dir))
 
 if __name__ == "__main__":
     main()
