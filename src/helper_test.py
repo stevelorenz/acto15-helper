@@ -33,21 +33,8 @@ it just stealing the sending time of original encoder
 """
 
 
-##
-# @brief simulate the helper_test with determined parameters
-#
-# @param symbols, symbol_size
-# @param e_1, e_2, e_3
-# @param tr
-# @param data_in
-# @param num_sim
-#
-# @return
-def simulate(symbols, symbol_size, e_1, e_2, e_3, tr, data_in, num_sim):
+def simulate(symbols, symbol_size, e_1, e_2, e_3, tr, data_in, num_sim, results_file):
 
-    #  print("the tr for simulation is %d" %tr)
-
-    # TODO: (optional) parameterize different encoders/decoders
     # firstly use a Full RLNC coder with GF(2) Field
     encoder_factory = kodo.FullVectorEncoderFactoryBinary(
         max_symbols=symbols,
@@ -57,7 +44,6 @@ def simulate(symbols, symbol_size, e_1, e_2, e_3, tr, data_in, num_sim):
         max_symbols=symbols,
         max_symbol_size=symbol_size)
 
-    # simulate for num_sim times --------------------------------------------------------
     # init lists for statistical results
     encoder_sent_list = []
     recoder_sent_list = []
@@ -65,7 +51,6 @@ def simulate(symbols, symbol_size, e_1, e_2, e_3, tr, data_in, num_sim):
 
     for i in range(num_sim):
         # start test loop ----------------------------------------------------------------
-        #  print("round number is %d" %i)
 
         # creat coder at each node
         # TODO: wether kodo has clean_buffer function of coder
@@ -153,6 +138,7 @@ def simulate(symbols, symbol_size, e_1, e_2, e_3, tr, data_in, num_sim):
 
                     flag = not flag  # change flag for next round
         # end recieve loop --------------------------------------------------------------
+
         total_packets_sent = ct_encoder_sent + ct_recoder_sent
 
         # copy the symbols from the decoders
@@ -160,13 +146,6 @@ def simulate(symbols, symbol_size, e_1, e_2, e_3, tr, data_in, num_sim):
 
         # check we properly decoded the data
         if data_out == data_in:
-            #  print("data decoded correctly...")
-            #  print("packets sent from encoder is %d" % ct_encoder_sent)
-            #  print("packets recieved by recoder is %d" % ct_recoder_recv)
-            #  print("packets sent from recoder is %d" % ct_recoder_sent)
-            #  print("packets recieved by decoder is %d" % ct_decoder_recv)
-            #  print("number of linear dependent packets by encoder is %d" % ct_dependent_encoder)
-            #  print("total number packets sent is %d" % total_packets_sent)
             # put the results in lists
             encoder_sent_list.append(ct_encoder_sent)
             recoder_sent_list.append(ct_recoder_sent)
@@ -176,6 +155,7 @@ def simulate(symbols, symbol_size, e_1, e_2, e_3, tr, data_in, num_sim):
             print("unexpected failure to decode please file a bug report :)")
             sys.exit(1)
     # end test loop ---------------------------------------------------------------------
+
     # caculate statistical results
 
     # for total(encoder plus recoder)
@@ -193,8 +173,8 @@ def simulate(symbols, symbol_size, e_1, e_2, e_3, tr, data_in, num_sim):
     std_recoder_sent = np.std(recoder_sent_list)
     emp_std_recoder_sent = np.sqrt(float(num_sim) / (num_sim - 1)) * std_recoder_sent  # get empirical std
 
-    # save the results in a CVS file
-    data_file = open('./results.dat', 'a')
+    # save the results in a CVS file (path ../test-results)
+    data_file = open(results_file, 'a')
     data_str = str(avg_total_sent) + ',' + str(emp_std_total_sent) + ' '
     data_str += str(avg_recoder_sent) + ',' + str(emp_std_recoder_sent) + '\n'
     data_file.write(data_str)
